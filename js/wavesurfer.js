@@ -55,13 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var showProgress = function (percent) {
         progressDiv.style.display = 'block';
         progressBar.style.width = percent + '%';
-        console.log("showing progress");
     };
 
     var hideProgress = function () {
         progressDiv.style.display = 'none';
-        console.log("hiding progress");
-
         document.getElementById('bothWaveform').childNodes[1].style.width='940px';
     };
 
@@ -84,6 +81,7 @@ function playPauseBoth() {
     return function() { wavesurfers[2].playPause(); wavesurfers[3].playPause() };
 }
 GLOBAL_ACTIONS['both-play'] = playPauseBoth();
+
 
 // Bind actions to buttons
 document.addEventListener('DOMContentLoaded', function () {
