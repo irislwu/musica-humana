@@ -1,55 +1,89 @@
 'use strict';
 
+var wavesurfers = [];
+var wavesurferInfo = [ { 'name': 'piano', 'color': 'violet', 'tag': '#pianoWaveform', 'file': 'audio/piano.mp3'},
+                        { 'name': 'brain', 'color': 'green', 'tag': '#brainWaveform', 'file': 'audio/brain.mp3'}]
+
 // Create an instance
-var wavesurfer = Object.create(WaveSurfer);
+for (var i = 0; i < 2 * wavesurferInfo.length; i++) {
+    var wavesurfer = Object.create(WaveSurfer);
+    wavesurfers.push(wavesurfer);
+}
 
 // Init & load audio file
 document.addEventListener('DOMContentLoaded', function () {
-    var options = {
-        container     : document.querySelector('#waveform'),
-        waveColor     : 'violet',
-        progressColor : 'purple',
-        loaderColor   : 'purple',
-        cursorColor   : 'navy'
-    };
+    for (var i = 0; i < wavesurferInfo.length; i++) {
+        var options = {
+            container     : document.querySelector(wavesurferInfo[i]['tag']),
+            waveColor     : wavesurferInfo[i]['color'],
+            progressColor : 'purple',
+            loaderColor   : 'purple',
+            cursorColor   : 'navy',
+            hideScrollbar : true
+        };
 
-    if (location.search.match('scroll')) {
-        options.minPxPerSec = 100;
-        options.scrollParent = true;
+        // Init
+        wavesurfers[i].init(options);
+        // Load audio from URL
+        wavesurfers[i].load(wavesurferInfo[i]['file']);
     }
 
-    // Init
-    wavesurfer.init(options);
-    // Load audio from URL
-    wavesurfer.load('audio/brain.mp3');
+    for (; i < 2 * wavesurferInfo.length; i++) {
+        var options = {
+            container     : document.querySelector('#bothWaveform'),
+            waveColor     : wavesurferInfo[i % wavesurferInfo.length]['color'],
+            progressColor : 'purple',
+            loaderColor   : 'purple',
+            cursorColor   : 'navy',
+            dragSelection : false,
+            hideScrollbar: true
+        };
+
+        // Init
+        wavesurfers[i].init(options);
+        // Load audio from URL
+        wavesurfers[i].load(wavesurferInfo[i % wavesurferInfo.length]['file']);
+    }
 
 });
 
-/* Progress bar */
+// Hack - progress bar shows only progress of last wavesurfer being loaded
 document.addEventListener('DOMContentLoaded', function () {
-    var progressDiv = document.querySelector('#progress-bar');
+    var progressDiv = document.querySelector('#both-progress-bar');
     var progressBar = progressDiv.querySelector('.progress-bar');
 
     var showProgress = function (percent) {
         progressDiv.style.display = 'block';
         progressBar.style.width = percent + '%';
+        console.log("showing progress");
     };
 
     var hideProgress = function () {
         progressDiv.style.display = 'none';
+        console.log("hiding progress");
+
+        document.getElementById('bothWaveform').childNodes[1].style.width='940px';
     };
 
-    wavesurfer.on('loading', showProgress);
-    wavesurfer.on('ready', hideProgress);
-    wavesurfer.on('destroy', hideProgress);
-    wavesurfer.on('error', hideProgress);
+    var lastIndex = 2 * wavesurferInfo.length - 1;
+    wavesurfers[lastIndex].on('loading', showProgress);
+    wavesurfers[lastIndex].on('ready', hideProgress);
+    wavesurfers[lastIndex].on('destroy', hideProgress);
+    wavesurfers[lastIndex].on('error', hideProgress);
 });
 
-var GLOBAL_ACTIONS = {
-    'play': function () {
-        wavesurfer.playPause();
-    },
-};
+var GLOBAL_ACTIONS = {};
+for (var i = 0; i < wavesurferInfo.length; i++) {
+    function playPause(i) {
+        return function() { wavesurfers[i].playPause(); };
+    }
+    GLOBAL_ACTIONS[wavesurferInfo[i]['name'] + '-play'] = playPause(i);
+}
+
+function playPauseBoth() {
+    return function() { wavesurfers[2].playPause(); wavesurfers[3].playPause() };
+}
+GLOBAL_ACTIONS['both-play'] = playPauseBoth();
 
 // Bind actions to buttons
 document.addEventListener('DOMContentLoaded', function () {
@@ -64,20 +98,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-// Misc
+// Hack styling for piano + brain
 document.addEventListener('DOMContentLoaded', function () {
-    // Navbar links
-    var ul = document.querySelector('.nav-pills');
-    var pills = ul.querySelectorAll('li');
-    var active = pills[0];
-    if (location.search) {
-        var first = location.search.split('&')[0];
-        var link = ul.querySelector('a[href="' + first + '"]');
-        if (link) {
-            active =  link.parentNode;
-        }
-    }
-    active && active.classList.add('active');
+    document.getElementById('bothWaveform').childNodes[1].style.opacity=0.5;
+    document.getElementById('bothWaveform').childNodes[2].style.opacity=0.5;
+    document.getElementById('bothWaveform').childNodes[1].style.position='absolute';
 });
 
