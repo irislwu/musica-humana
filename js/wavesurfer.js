@@ -97,8 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Hack styling for piano + brain
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('bothWaveform').childNodes[1].style.position='absolute';
-    document.getElementById('bothWaveform').childNodes[1].className = 'absolute-style';
-    document.getElementById('bothWaveform').childNodes[2].style.opacity=0.6;
+    document.getElementById('bothWaveform').childNodes[1].className='transparent';
+    document.getElementById('bothWaveform').childNodes[2].className = 'transparent overlap';
 });
 

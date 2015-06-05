@@ -12,14 +12,12 @@
     margin-bottom: 20px;
 }
 
-.about {
-    margin-top: 30px;
+.transparent {
+    opacity: .6;
 }
 
-.absolute-style {
-    opacity: .6;
-    position: absolute;
-    width: 940px;
+.overlap {
+    top: -128px;
 }
 
 .byline {
@@ -29,4 +27,12 @@
 
 .navbar-btn {
     color: #e7a55b;
+}
+
+.about-divider {
+    margin-top: -50px;
+}
+
+.#project {
+    margin-top: 50px;
 }
