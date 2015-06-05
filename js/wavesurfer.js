@@ -61,8 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var hideProgress = function () {
         progressDiv.style.display = 'none';
         console.log("hiding progress");
-
-        document.getElementById('bothWaveform').childNodes[1].style.width='940px';
     };
 
     var lastIndex = 2 * wavesurferInfo.length - 1;
@@ -100,8 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Hack styling for piano + brain
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('bothWaveform').childNodes[1].style.opacity=0.5;
-    document.getElementById('bothWaveform').childNodes[2].style.opacity=0.5;
-    document.getElementById('bothWaveform').childNodes[1].style.position='absolute';
+    document.getElementById('bothWaveform').childNodes[1].className='transparent';
+    document.getElementById('bothWaveform').childNodes[2].className = 'transparent overlap';
 });
 

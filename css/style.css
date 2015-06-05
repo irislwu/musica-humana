@@ -12,6 +12,26 @@
     margin-bottom: 20px;
 }
 
-.about {
-    margin-top: 30px;
+.transparent {
+    opacity: .6;
 }
+
+.overlap {
+    top: -128px;
+}
+
+.byline {
+    font-style: italic;
+    text-align: right;
+}
+
+.navbar-btn {
+    color: #e7a55b;
+}
+
+.about-divider {
+    margin-top: -50px;
+}
+
+#project {
+    margin-top: 50px;
