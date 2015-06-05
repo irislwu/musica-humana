@@ -1,8 +1,8 @@
 'use strict';
 
 var wavesurfers = [];
-var wavesurferInfo = [ { 'name': 'piano', 'color': 'violet', 'tag': '#pianoWaveform', 'file': 'audio/piano.mp3'},
-                        { 'name': 'brain', 'color': 'green', 'tag': '#brainWaveform', 'file': 'audio/brain.mp3'}]
+var wavesurferInfo = [ { 'name': 'piano', 'color': '#E78D5B', 'progress-color': '#C26836', 'cursor-color': '#883E15', 'tag': '#pianoWaveform', 'file': 'audio/piano.mp3'},
+                        { 'name': 'brain', 'color': '#E7625B', 'progress-color': '#C23D36', 'cursor-color': '#881B15', 'tag': '#brainWaveform', 'file': 'audio/brain.mp3'}]
 
 // Create an instance
 for (var i = 0; i < 2 * wavesurferInfo.length; i++) {
@@ -16,9 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var options = {
             container     : document.querySelector(wavesurferInfo[i]['tag']),
             waveColor     : wavesurferInfo[i]['color'],
-            progressColor : 'purple',
-            loaderColor   : 'purple',
-            cursorColor   : 'navy',
+            progressColor : wavesurferInfo[i]['progress-color'],
+            cursorColor   : wavesurferInfo[i]['cursor-color'],
             hideScrollbar : true
         };
 
@@ -32,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var options = {
             container     : document.querySelector('#bothWaveform'),
             waveColor     : wavesurferInfo[i % wavesurferInfo.length]['color'],
-            progressColor : 'purple',
-            loaderColor   : 'purple',
-            cursorColor   : 'navy',
+            progressColor : wavesurferInfo[i % wavesurferInfo.length]['progress-color'],
+            cursorColor   : wavesurferInfo[i % wavesurferInfo.length]['cursor-color'],
+            interact      : false,
             dragSelection : false,
             hideScrollbar: true
         };
@@ -55,12 +54,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var showProgress = function (percent) {
         progressDiv.style.display = 'block';
         progressBar.style.width = percent + '%';
-        console.log("showing progress");
     };
 
     var hideProgress = function () {
         progressDiv.style.display = 'none';
-        console.log("hiding progress");
+        // document.getElementById('bothWaveform').childNodes[1].style.width='940px';
     };
 
     var lastIndex = 2 * wavesurferInfo.length - 1;
@@ -82,6 +80,7 @@ function playPauseBoth() {
     return function() { wavesurfers[2].playPause(); wavesurfers[3].playPause() };
 }
 GLOBAL_ACTIONS['both-play'] = playPauseBoth();
+
 
 // Bind actions to buttons
 document.addEventListener('DOMContentLoaded', function () {
